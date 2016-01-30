@@ -4,7 +4,7 @@
  *EE 422C lab time: TH 9:30-11am 
  */
 
-package Assignment1;
+package Assignment1; // first assignment of the semester
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
