@@ -85,7 +85,7 @@ public class Translator
 			int space = inputString.indexOf(' ');  // 12
 			int hyphen = inputString.indexOf('-');  //4
 
-			//TODO: finish this
+			//TODO: finish this! ok!
 			
 		}
 		return result;
