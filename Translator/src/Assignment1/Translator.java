@@ -41,19 +41,14 @@ public class Translator
 			FileReader freader = new FileReader(filename);
 			BufferedReader reader = new BufferedReader(freader);
 
-//			for (String s = reader.readLine(); s != null; s = reader.readLine()) 
-//			{
-//				//System.out.println(s); // Before
-//				String pigLatin = translator.translate(s);
-//				System.out.print('\n');
-//				//System.out.println(pigLatin); // After
-//			}
-			
-			//String before = "well-thought ";
-			//System.out.println("Before: " + before);
-			String pigLatin = translator.translate("well-thought");
-			//System.out.println("Result: " + pigLatin);
-			
+			for (String s = reader.readLine(); s != null; s = reader.readLine()) 
+			{
+				System.out.println(s); // Before
+				String pigLatin = translator.translate(s);
+				System.out.print('\n');
+				System.out.println(pigLatin); // After
+			}
+
 			
 		} 
 		catch (FileNotFoundException e) 
@@ -79,8 +74,7 @@ public class Translator
 
 	public String translate (String inputString) 
 	{ 
-		String hyphenLatin = hyphenPigLatin("well-thought");
-		System.out.println("Result: " + hyphenLatin);
+		System.out.println(convertToPigLatin(inputString));
 		if(inputString.length() == 0){
 			return "Empty String."; // Base Case
 		}
@@ -91,34 +85,72 @@ public class Translator
 			int space = inputString.indexOf(' ');  // 12
 			int hyphen = inputString.indexOf('-');  //4
 
-			
+			//TODO: finish this
 			
 		}
 		return result;
 	}
 	
 	
-	// example well-thought
+	// example:
+	// well-thought
+	// do-it-yourself
 	String hyphenPigLatin(String str) {
+		//str = do-it-yourself2
 		
-		return null;
+		if(!stringIsInAlphabet(str)){	
+			return str;	//check if string doesn't have weird punctuation symbols
+		}
+		
+		
+		String result = "";
+		while(str.indexOf('-') != -1 || (str.length() > 0)){
+			int hyphen = str.indexOf('-');
+			if (hyphen == -1){
+				hyphen = str.length();
+			}
+			String tmpHypStr = str.substring(0, hyphen);
+			result = result + convertToPigLatin(tmpHypStr);
+			if (hyphen == str.length()){
+				return result;
+			} else {
+				result = result + '-';
+			}
+	
+			str = str.substring(hyphen + 1, str.length());
+			
+		}	
+		return result;
 	}
 
 	
 	// well -> ellway
 	String convertToPigLatin(String str){
-		if(!stringIsInAlphabet(str)){	
-			return str;	//check if string doesn't have weird punctuation symbols
+		String tmpPunct = "";
+		if(!stringIsInAlphabet(str)){
+			
+			for(int i = str.length(); i > 0; i--){
+				if(isPuncutation(str.charAt(i-1))){
+					// continue
+				} else{
+					tmpPunct = str.substring(i, str.length());
+					str = str.substring(0, i);
+					break; // break out of for loop
+				}
+			}
+			if(!stringIsInAlphabet(str)){
+				return str + tmpPunct; // check if remaining string is valid
+			}
 		}
 		
 		int vowel = vowelIndex(str);	//returns the first instance of a vowel
 		if(vowel == -1){	
-			return (str + "ay");	//if there were no vowels present, then append "ay"
+			return (str + "ay") + tmpPunct;	//if there were no vowels present, then append "ay"
 		}
 		if(vowel == 0){ 	
 			String result = str.substring(vowel+1, str.length());	//vowel was the first character
 			result = result + str.charAt(vowel) + "yay";	//extract first letter and place at the end of the string followed by a "yay"
-			return result; 
+			return result + tmpPunct; 
 		}
 		if(str.charAt(vowel-1) == '\''){
 			vowel = vowel - 1;
@@ -127,7 +159,7 @@ public class Translator
 		String result = str.substring(vowel, str.length());	//string starts with a consonant. Rule #2 from PDF
 		result = result + str.substring(0, vowel) + "ay";
 		
-		return result;
+		return result + tmpPunct;
 	}
 
 	/**
@@ -145,9 +177,16 @@ public class Translator
 	}
 
 	boolean stringIsInAlphabet(String str){
-		return str.matches("[a-zA-Z]+") || str.contains("'") || str.contains("-");
+		for(int i=0; i < str.length(); i++){
+			if(!charIsInAlphabet(str.charAt(i))){
+				return false;
+			}
+		} 
+		return true;
 	}
 
+	
+	
 	/*
 	 * Looks for the index of the Hyphen 
 	 * Input: String to be searched
@@ -173,6 +212,13 @@ public class Translator
 			}
 		}
 		return -1; // didn't find it, so return a -1
+	}
+	
+	boolean isPuncutation(char ch){
+		if(ch == ',' || ch == '.' || ch == ';' || ch == ':' || ch == '!' || ch == '?'){
+			return true;
+		}
+		return false;
 	}
 
 }
