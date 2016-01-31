@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class Translator 
 {
-	
+
 	public static void main (String args[]) 
 	{ 
 		if (args.length != 1) 
@@ -22,16 +22,16 @@ public class Translator
 			System.exit(-1);
 		}
 		processLinesInFile (args[0]);
-		
+
 	}
 
 	/******************************************************************************
-	* Method Name: processLinesInFile                                             *
-	* Purpose: Opens the file specified in String filename, reads each line in it *
-	*          Invokes translate () on each line in the file, and prints out the  *
-	*          translated piglatin string.                                        *
-	* Returns: None                                                               *
-	******************************************************************************/
+	 * Method Name: processLinesInFile                                             *
+	 * Purpose: Opens the file specified in String filename, reads each line in it *
+	 *          Invokes translate () on each line in the file, and prints out the  *
+	 *          translated piglatin string.                                        *
+	 * Returns: None                                                               *
+	 ******************************************************************************/
 	public static void processLinesInFile (String filename) 
 	{ 
 
@@ -40,14 +40,21 @@ public class Translator
 		{
 			FileReader freader = new FileReader(filename);
 			BufferedReader reader = new BufferedReader(freader);
+
+//			for (String s = reader.readLine(); s != null; s = reader.readLine()) 
+//			{
+//				//System.out.println(s); // Before
+//				String pigLatin = translator.translate(s);
+//				System.out.print('\n');
+//				//System.out.println(pigLatin); // After
+//			}
 			
-			for (String s = reader.readLine(); s != null; s = reader.readLine()) 
-			{
-				//System.out.println(s); // Before
-				String pigLatin = translator.translate(s);
-				System.out.print('\n');
-				//System.out.println(pigLatin); // After
-			}
+			//String before = "well-thought ";
+			//System.out.println("Before: " + before);
+			String pigLatin = translator.translate("well-thought");
+			//System.out.println("Result: " + pigLatin);
+			
+			
 		} 
 		catch (FileNotFoundException e) 
 		{
@@ -61,62 +68,68 @@ public class Translator
 			System.exit(-1);
 		}
 	}
-	
+
 	/******************************************************************************
-	* Method Name: translate                                                      *
-	* Purpose: Converts String inputString into piglatin based on rules specified *
-	*          in your assignment write-up.                                       *
-	* Returns: String object containing the piglatin translation of               *
-	*          String inputString                                                 *
-	******************************************************************************/
-	
+	 * Method Name: translate                                                      *
+	 * Purpose: Converts String inputString into piglatin based on rules specified *
+	 *          in your assignment write-up.                                       *
+	 * Returns: String object containing the piglatin translation of               *
+	 *          String inputString                                                 *
+	 ******************************************************************************/
+
 	public String translate (String inputString) 
 	{ 
-//		if (inputString.length() == 0){
-//			inputString = "Empty String.";
-//			return inputString;
-//		}
-//		char ch = 0;
-//		int index1 = 0;
-//		int index2 = 0;
-//		for (int i = 0; i < inputString.length(); i++){
-//			ch = inputString.charAt(i);
-//			while(ch != ' ' || '-'){
-//				i++;
-//				ch = inputString.charAt(i);
-//			}
-//			int j = 0;
-//			char ch_j;
-//			for(j = index2; j < i; j++){
-//				ch_j = inputString.charAt(j);
-//				if ((ch_j <= 'a' || ch >= 'z') || (ch <= 'A' && ch >= 'Z') || (ch_j != 39)){
-//					index2 = i;
-//				} else {
-//					//add "yay" at the end
-//				
-//			}
-//			if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')){
-//				index1 = i;
-//				do { 
-//					i++;
-//					ch = inputString.charAt(i);
-//				} while ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch == 39));
-//				index2 = i;
-//			}
-//			char beginLetter = inputString.charAt(index1);
-//			char lastLetter = inputString.charAt(index2 - 1);
-//			if(beginLetter >= 'a' && beginLetter <= 'z'){
-//				//
-//			}
-//		}
-//		
-//		// modify the following code. Add/delete anything after this point.
-//		String outputString = new String(inputString); // Copies input to output and prints it. 
-//		return outputString;
-		System.out.print(stringIsInAlphabet("&#*"));
-		return "Hello";
+		String hyphenLatin = hyphenPigLatin("well-thought");
+		System.out.println("Result: " + hyphenLatin);
+		if(inputString.length() == 0){
+			return "Empty String."; // Base Case
+		}
+		
+		String result = "";
+		while(inputString.length() != 0){
+			
+			int space = inputString.indexOf(' ');  // 12
+			int hyphen = inputString.indexOf('-');  //4
+
+			
+			
+		}
+		return result;
 	}
 	
+	
+	// example well-thought
+	String hyphenPigLatin(String str) {
+		
+		return null;
+	}
+
+	
+	// well -> ellway
+	String convertToPigLatin(String str){
+		if(!stringIsInAlphabet(str)){	
+			return str;	//check if string doesn't have weird punctuation symbols
+		}
+		
+		int vowel = vowelIndex(str);	//returns the first instance of a vowel
+		if(vowel == -1){	
+			return (str + "ay");	//if there were no vowels present, then append "ay"
+		}
+		if(vowel == 0){ 	
+			String result = str.substring(vowel+1, str.length());	//vowel was the first character
+			result = result + str.charAt(vowel) + "yay";	//extract first letter and place at the end of the string followed by a "yay"
+			return result; 
+		}
+		if(str.charAt(vowel-1) == '\''){
+			vowel = vowel - 1;
+		}
+		
+		String result = str.substring(vowel, str.length());	//string starts with a consonant. Rule #2 from PDF
+		result = result + str.substring(0, vowel) + "ay";
+		
+		return result;
+	}
+
 	/**
 	 * Looks to see if character is in the alphabet or is an apostrophe
 	 * 
@@ -130,9 +143,9 @@ public class Translator
 			return false;
 		}
 	}
-	
+
 	boolean stringIsInAlphabet(String str){
-		return str.matches(".*(?i)[aeiou]") || str.contains("'") || str.contains("-");
+		return str.matches("[a-zA-Z]+") || str.contains("'") || str.contains("-");
 	}
 
 	/*
@@ -144,7 +157,7 @@ public class Translator
 	int hyphenIndex(String str){
 		return str.indexOf('-');
 	}
-	
+
 	boolean isVowel(char ch){
 		if(ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'A' || ch == 'E' || ch == 'I' || ch == 'O' || ch == 'U' ){
 			return true;
@@ -152,7 +165,7 @@ public class Translator
 			return false;
 		}
 	}
-	
+
 	int vowelIndex(String str){
 		for(int i=0; i< str.length(); i++){
 			if (isVowel(str.charAt(i))){
@@ -161,5 +174,5 @@ public class Translator
 		}
 		return -1; // didn't find it, so return a -1
 	}
-	
+
 }
