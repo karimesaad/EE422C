@@ -81,48 +81,36 @@ public class Translator {
 		String current = "";
 		while (inputString.length() > 0) {
 			while (inputString.charAt(0) == ' ') {
-				inputString = inputString.substring(1, inputString.length()); // get
-																				// rid
-																				// of
-																				// all
-																				// empty
-																				// space
+				inputString = inputString.substring(1, inputString.length()); // get rid of all empty space
 			}
 			int space = inputString.indexOf(' '); // look for the first space
 			if (space == -1) {
 				space = inputString.length();
 			}
 
-			if (inputString.substring(0, space).indexOf('-') > -1) {
+			if (inputString.substring(0, space).indexOf('-') > -1) {	// check if there's a hyphen
 				current = hyphenPigLatin(inputString.substring(0, space));
 			} else {
-				current = convertToPigLatin(inputString.substring(0, space)); // convert
-																				// first
-																				// word
-																				// to
-																				// piglatin
+				current = convertToPigLatin(inputString.substring(0, space)); // convert first word to pig latin
 			}
 			result += current;
 			result += " ";
 			// System.out.println(current);
-			inputString = inputString.substring(space, inputString.length()); // rest
-																				// of
-																				// string
-																				// to
-																				// be
-																				// converted
+			inputString = inputString.substring(space, inputString.length()); // rest of string to be converted
 		}
 		return result;
 	}
-
-	// example:
-	// well-thought
-	// do-it-yourself
+	
+	/* Converts original word with a hyphen in between to piglatin
+	 * 
+	 * Input: Original string with hypehn
+	 * Output: string translated to piglatin
+	 */
 	String hyphenPigLatin(String str) {
 		// str = do-it-yourself2
-		String tmpPunct = "";
+		String tmpPunct = "";	//tmpPunct will store the punctuation symbol found
 
-		if (!stringIsInAlphabet(str)) {
+		if (!stringIsInAlphabet(str)) {		//check is string has weird symbol
 			for (int i = str.length(); i > 0; i--) {
 				if (isPuncutation(str.charAt(i - 1))) {
 					// continue
@@ -146,8 +134,8 @@ public class Translator {
 			}
 			String tmpHypStr = str.substring(0, hyphen);
 			result = result + convertToPigLatin(tmpHypStr);
-			if (hyphen == str.length()) {
-				return result + tmpPunct;
+			if (hyphen == str.length()) {		
+				return result + tmpPunct; // hyphen is at end of string
 			} else {
 				result = result + '-';
 			}
@@ -158,7 +146,12 @@ public class Translator {
 		return result + tmpPunct;
 	}
 
-	// well -> ellway
+	/*Converts a word to piglatin
+ 	* 
+ 	* Input: Original string (word)
+	 * Output: String (word) translated to piglatin
+	 */
+ 
 	String convertToPigLatin(String str) {
 		String tmpPunct = "";
 		if (!stringIsInAlphabet(str)) {
@@ -183,15 +176,13 @@ public class Translator {
 											// then append "ay"
 		}
 		if (vowel == 0) {
-			return str + "yay";
+			return str + "yay"; //vowel is first letter in string. Just add "yay" at end of string
 		}
-		if (str.charAt(vowel - 1) == '\'') {
+		if (str.charAt(vowel - 1) == '\'') { 
 			vowel = vowel - 1;
 		}
 
-		String result = str.substring(vowel, str.length()); // string starts
-															// with a consonant.
-															// Rule #2 from PDF
+		String result = str.substring(vowel, str.length()); // string starts with a consonant. Rule #2 from PDF
 		result = result + str.substring(0, vowel) + "ay";
 
 		return result + tmpPunct;
@@ -200,9 +191,8 @@ public class Translator {
 	/**
 	 * Looks to see if character is in the alphabet or is an apostrophe
 	 * 
-	 * @param ch
-	 *            - character to be checked
-	 * @return returns true if in alphabet
+	 * Input: character to be checked
+	 * Output: returns true if in alphabet
 	 */
 	boolean charIsInAlphabet(char ch) {
 		if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch == '\'') || (ch == '-')) {
@@ -211,7 +201,12 @@ public class Translator {
 			return false;
 		}
 	}
-
+	/**
+	 * Looks to see if string is in the alphabet or is an apostrophe or hyphen. 
+	 * Uses the helper mehtod "charIsInAlphabet".
+	 * Input: character to be checked
+	 * Output: returns true if in alphabet
+	 */
 	boolean stringIsInAlphabet(String str) {
 		for (int i = 0; i < str.length(); i++) {
 			if (!charIsInAlphabet(str.charAt(i))) {
@@ -222,12 +217,18 @@ public class Translator {
 	}
 
 	/*
-	 * Looks for the index of the Hyphen Input: String to be searched Output: >0
-	 * : index found -1 : not found
+	 * Looks for the index of the Hyphen 
+	 * Input: String to be searched 
+	 * Output: >0 = index found,  -1 = not found
 	 */
 	int hyphenIndex(String str) {
 		return str.indexOf('-');
 	}
+
+	/** Checks if character passed is a vowel (lower-case or upper-case)
+	 * Input: character to be checked
+	 * Output: returns false if char is not a vowel. Otherwise, returns true. 
+	 */
 
 	boolean isVowel(char ch) {
 		if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'A' || ch == 'E' || ch == 'I'
@@ -238,15 +239,25 @@ public class Translator {
 		}
 	}
 
+	/** Looks for index of appareance of vowel in a string
+	 * Input: String (word)
+	 * Output: index of vowel found. If not found, returns a -1. 
+	 */
+
 	int vowelIndex(String str) {
 		for (int i = 0; i < str.length(); i++) {
 			if (isVowel(str.charAt(i))) {
-				return i;
+				return i; //returns index where vowel was found. 
 			}
 		}
 		return -1; // didn't find it, so return a -1
 	}
 
+	/** Checks if character passed is a valid punctutation symbol
+	 * Input: character to be checked
+	 * Output: returns true if symbol is valid. Otherwise, returns false. 
+	 */
+	 
 	boolean isPuncutation(char ch) {
 		if (ch == ',' || ch == '.' || ch == ';' || ch == ':' || ch == '!' || ch == '?') {
 			return true;
