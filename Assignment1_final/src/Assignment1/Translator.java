@@ -111,15 +111,8 @@ public class Translator {
 		String tmpPunct = "";	//tmpPunct will store the punctuation symbol found
 
 		if (!stringIsInAlphabet(str)) {		//check is string has weird symbol
-			for (int i = str.length(); i > 0; i--) {
-				if (isPuncutation(str.charAt(i - 1))) {
-					// continue
-				} else {
-					tmpPunct = str.substring(i, str.length());
-					str = str.substring(0, i);
-					break; // break out of for loop
-				}
-			}
+			tmpPunct = removePunctuation(str);
+			str = str.substring(0, str.length() - 1 - tmpPunct.length());
 			if (!stringIsInAlphabet(str)) {
 				return str + tmpPunct; // check if remaining string is valid
 			}
@@ -155,16 +148,8 @@ public class Translator {
 	String convertToPigLatin(String str) {
 		String tmpPunct = "";
 		if (!stringIsInAlphabet(str)) {
-
-			for (int i = str.length(); i > 0; i--) {
-				if (isPuncutation(str.charAt(i - 1))) {
-					// continue
-				} else {
-					tmpPunct = str.substring(i, str.length());
-					str = str.substring(0, i);
-					break; // break out of for loop
-				}
-			}
+			tmpPunct = removePunctuation(str);
+			str = str.substring(0, str.length() - 1 - tmpPunct.length());
 			if (!stringIsInAlphabet(str)) {
 				return str + tmpPunct; // check if remaining string is valid
 			}
@@ -263,6 +248,25 @@ public class Translator {
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Removes punctuation from the end of the string and returns the string with the removed punctuation
+	 * @param string to be checked
+	 * @return punctuation symbols
+	 */
+	String removePunctuation(String str){
+		String tmpPunct = "";
+		for (int i = str.length(); i > 0; i--) {
+			if (isPuncutation(str.charAt(i - 1))) {
+				// continue
+			} else {
+				tmpPunct = str.substring(i, str.length());
+				str = str.substring(0, i);
+				break; // break out of for loop
+			}
+		}
+		return tmpPunct;
 	}
 
 }
