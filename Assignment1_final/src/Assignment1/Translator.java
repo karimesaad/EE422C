@@ -30,19 +30,14 @@ public class Translator {
 	 * Returns: None *
 	 ******************************************************************************/
 	public static void processLinesInFile(String filename) {
-
 		Translator translator = new Translator();
 		try {
 			FileReader freader = new FileReader(filename);
 			BufferedReader reader = new BufferedReader(freader);
-
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
-				System.out.println(s); // Before
 				String pigLatin = translator.translate(s);
-				System.out.println(pigLatin); // After
-				System.out.println();
+				System.out.println(pigLatin);
 			}
-
 		} catch (FileNotFoundException e) {
 			System.err.println("Error: File not found. Exiting...");
 			e.printStackTrace();
@@ -52,7 +47,6 @@ public class Translator {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-
 	}
 
 	/******************************************************************************
