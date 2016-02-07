@@ -53,15 +53,6 @@ public class Translator {
 			System.exit(-1);
 		}
 
-		// To test user defined lines
-		/*
-		 * String input = ""; while(true){ System.out.println(
-		 * "Please type in a word that you would like for this program to translate, thank you so much and have a great day! :)"
-		 * ); Scanner in = new Scanner(System.in); input = in.nextLine();
-		 * System.out.println("You entered: " + input); System.out.println(
-		 * "But in pig latin...it means: " + translator.translate(input) +
-		 * "\n"); }
-		 */
 	}
 
 	/******************************************************************************
@@ -74,7 +65,7 @@ public class Translator {
 	public String translate(String inputString) {
 
 		if (inputString.length() == 0) {
-			return "Empty String."; // Base Case
+			return inputString; // Base Case
 		}
 
 		String result = "";
@@ -103,10 +94,10 @@ public class Translator {
 	
 	/* Converts original word with a hyphen in between to piglatin
 	 * 
-	 * Input: Original string with hypehn
+	 * Input: Original string with hyphen
 	 * Output: string translated to piglatin
 	 */
-	String hyphenPigLatin(String str) {
+	private String hyphenPigLatin(String str) {
 		// str = do-it-yourself2
 		String tmpPunct = "";	//tmpPunct will store the punctuation symbol found
 
@@ -145,7 +136,7 @@ public class Translator {
 	 * Output: String (word) translated to piglatin
 	 */
  
-	String convertToPigLatin(String str) {
+	private String convertToPigLatin(String str) {
 		String tmpPunct = "";
 		if (!stringIsInAlphabet(str)) {
 			tmpPunct = removePunctuation(str);
@@ -179,7 +170,7 @@ public class Translator {
 	 * Input: character to be checked
 	 * Output: returns true if in alphabet
 	 */
-	boolean charIsInAlphabet(char ch) {
+	private boolean charIsInAlphabet(char ch) {
 		if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch == '\'') || (ch == '-')) {
 			return true;
 		} else {
@@ -192,7 +183,7 @@ public class Translator {
 	 * Input: character to be checked
 	 * Output: returns true if in alphabet
 	 */
-	boolean stringIsInAlphabet(String str) {
+	private boolean stringIsInAlphabet(String str) {
 		for (int i = 0; i < str.length(); i++) {
 			if (!charIsInAlphabet(str.charAt(i))) {
 				return false;
@@ -206,7 +197,7 @@ public class Translator {
 	 * Input: String to be searched 
 	 * Output: >0 = index found,  -1 = not found
 	 */
-	int hyphenIndex(String str) {
+	private int hyphenIndex(String str) {
 		return str.indexOf('-');
 	}
 
@@ -215,7 +206,7 @@ public class Translator {
 	 * Output: returns false if char is not a vowel. Otherwise, returns true. 
 	 */
 
-	boolean isVowel(char ch) {
+	private boolean isVowel(char ch) {
 		if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u' || ch == 'A' || ch == 'E' || ch == 'I'
 				|| ch == 'O' || ch == 'U') {
 			return true;
@@ -229,7 +220,7 @@ public class Translator {
 	 * Output: index of vowel found. If not found, returns a -1. 
 	 */
 
-	int vowelIndex(String str) {
+	private int vowelIndex(String str) {
 		for (int i = 0; i < str.length(); i++) {
 			if (isVowel(str.charAt(i))) {
 				return i; //returns index where vowel was found. 
@@ -243,7 +234,7 @@ public class Translator {
 	 * Output: returns true if symbol is valid. Otherwise, returns false. 
 	 */
 	 
-	boolean isPuncutation(char ch) {
+	private boolean isPuncutation(char ch) {
 		if (ch == ',' || ch == '.' || ch == ';' || ch == ':' || ch == '!' || ch == '?') {
 			return true;
 		}
@@ -255,7 +246,7 @@ public class Translator {
 	 * @param string to be checked
 	 * @return punctuation symbols
 	 */
-	String removePunctuation(String str){
+	private String removePunctuation(String str){
 		String tmpPunct = "";
 		for (int i = str.length(); i > 0; i--) {
 			if (isPuncutation(str.charAt(i - 1))) {
