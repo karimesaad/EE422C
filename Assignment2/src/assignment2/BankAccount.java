@@ -1,133 +1,3 @@
-package assignment2;
-
-public class CheckingAccount extends BankAccount{
-	
-	public CheckingAccount(double initialBalance) {
-		super(initialBalance);
-	}
-	
-	public CheckingAccount(int acct, Customer owner, double initBalance)
-    {
-        super(acct, owner, initBalance);
-    }
-	
-	/**
-	 * TODO: type description
-	 * 
-	 * @pre-condition: Savings Account was able to provide overdraft protection because you had enough money
-	 * @post-condition: Balance is $0 and Savings account gets a $20 fee
-	 * 
-	 * @param amount: amount to be deducted from checking account
-	 * @return owedAmount: what is left over to pay for savings account
-	 */
-	public double overdraftProtection(double amount){
-		double owedAmount = amount - this.balance; // get the remainder that is still due
-		this.withdraw(this.balance); // balance is $0
-		return owedAmount; // what is owed
-	}
-	
-	
-}
-/*
- * Name: Karime Saad
- *EID: ks38728
- *EE 422C lab time: TH 9:30-11am 
- */
-
-package assignment2;
-
-import java.util.Random;
-
-public class Customer {
-
-	private String name;
-	private int uniqueNumber;
-	private String address;
-	private CheckingAccount checkingAccount = new CheckingAccount(rand(), this, 0);
-	private SavingsAccount savingsAccount = new SavingsAccount(rand(), this, 0);
-	
-	public Customer(String name, int uniqueNumber, String address) {
-		super();
-		this.name = name;
-		this.uniqueNumber = uniqueNumber;
-		this.address = address;
-	}
-	
-	public Customer(){
-		this.name = "";
-		this.uniqueNumber = -1;
-		this.address = "";
-	}
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public int getUniqueNumber() {
-		return uniqueNumber;
-	}
-	public void setUniqueNumber(int uniqueNumber) {
-		this.uniqueNumber = uniqueNumber;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	
-	/**
-	 * Generates a random number between 0 - 1000 for the bank account number
-	 * 
-	 * @return Integer value between 0-1000
-	 */
-	public static int rand(){
-		Random randomGenerator = new Random();
-		return randomGenerator.nextInt(1000);
-	}
-	
-
-
-	public void withdrawFromAccount(String accountType, double amt) {
-		switch(accountType){
-			case "C":
-					this.checkingAccount.withdraw(amt); // TODO: check if you CAN withdraw 
-				break;
-			case "S":
-					this.savingsAccount.withdraw(amt);
-				break;
-			case "L":
-				break;
-			case "A":
-				break;
-			default:
-				System.out.println("Invalid Account Type");
-		}
-
-		
-	}
-
-	public void depositToAccount(String accountType, double amt) {
-		switch(accountType){
-			case "C":
-					this.checkingAccount.deposit(amt);
-				break;
-			case "S":
-					this.savingsAccount.deposit(amt);
-				break;
-			case "L":
-				break;
-			case "A":
-				break;
-			default:
-				System.out.println("Invalid Account Type");
-		}
-	}
-	
-	
-}
 /*
  * Name: Karime Saad
  *EID: ks38728
@@ -135,103 +5,131 @@ public class Customer {
  */
 package assignment2;
 
-import javax.swing.JOptionPane;
-
-
-public class driver {
-
-	@SuppressWarnings("unused")
-	public static void main(String[] args) {
-		
-		while(true){
-			String transaction = JOptionPane.showInputDialog("Please input a value");
-			int customerId = -1;
-			String transactionType = "";
-			String tmp = "";
-			double amount = -1;
-			String accountType = "";
-			String accountType2 = "";
-			
-			// expected transaction type: 
-			// CUSTOMER ID - TRANSACTION TYPE - AMOUNT - ACCOUNT TYPE - ACCOUNT TYPE 2
-			try{
-				customerId = Integer.parseInt(transaction.substring(0, 1));
-				transaction = transaction.substring(2, transaction.length());
-				
-				transactionType = transaction.substring(0,1).toUpperCase();
-				transaction = transaction.substring(2, transaction.length());
-				
-				if(transaction.indexOf(' ') > 0){
-					tmp = transaction.substring(0, transaction.indexOf(' '));
-				}
-				
-				if(tmp.indexOf('.') > 0){
-					amount = Double.parseDouble(tmp);
-					transaction = transaction.substring(transaction.indexOf(' ')+1, transaction.length());
-					if(transaction.length() > 0){
-						accountType = transaction.substring(0, 1).toUpperCase(); // C - checking, S - primary, L - student loan savings, A - auto loan savings
-						transaction = transaction.substring(2, transaction.length());
-					}
-				} else{
-					accountType = transaction.substring(0, 1).toUpperCase(); // C - checking, S - primary, L - student loan savings, A - auto loan savings
-					if(transaction.length() > 2){
-						transaction = transaction.substring(2, transaction.length());
-					} else {
-						transaction = transaction.substring(1, transaction.length());
-					}
-				}
+/**
+ * Model for general bank account object.  The purpose is to record money,
+ * and allow for various financial transactions to be performed over the
+ * life of a specific bank account.
+ * 
+ * @author ee422c teaching team
+ */
+class BankAccount 
+{   
+// instance variables (protected to allow inheriting them)
+	/**
+	 * A unique number that identifies the account
+	 */
+	protected int accountNumber;
 	
-				if(transaction.length() > 0){
-					accountType2 = transaction.substring(0,1).toUpperCase(); // optional
-				}
-			} catch(Exception e){
-				System.out.println("Invalid input");
-			}
-			
-			System.out.println("Customer ID: " + customerId);
-			System.out.println("Transaction Type: " + transactionType);
-			System.out.println("Amount: " + amount);
-			System.out.println("Account Type: " + accountType);
-			System.out.println("Account Type2: " + accountType2);
-			System.out.println();
-		}
-		
-		
-		//Customer Karime = new Customer("Karime", 1, "123 University");
-		//CheckingAccount Bank = new CheckingAccount(rand(), Karime, 1000);
-		
+	/**
+	 * The Customer whom owns this account
+	 */
+     protected Customer owner;
+    
+    /**
+     * the current value (in dollars) of the money in this account
+     */
+    protected double balance;
 
-		//Karime.depositToAccount("C", 120);
-		//Karime.withdrawFromAccount("C", 100);		
-	}
-
-	
-
-
-}
-package assignment2;
-
-public class SavingsAccount extends BankAccount{
-	private double interestRate = 4.0;
-	private static final int FEE = 20;
-	
-	public SavingsAccount(double initialBalance) {
-		super(initialBalance);
-		// TODO Auto-generated constructor stub
-	}
-	
-	public SavingsAccount(int acct, Customer owner, double initBalance)
+    
+//constructors
+    /**
+     * Create an account with an initial balance.
+     * @param initialBalance     The initial balance of the account
+     */
+    public BankAccount(double initialBalance)
     {
-        super(acct, owner, initBalance);
+        balance = initialBalance;
+    }
+    
+    /**
+     * Create an account with initial parameters.
+     * @param acct               The account number
+     * @param owner              The owner of the account
+     * @param initBalance        The initial balance of the account
+     */
+    public BankAccount(int acct, Customer owner, double initBalance)
+    {
+        this.accountNumber = acct;
+        this.owner = owner;
+        this.balance = initBalance; 
+    }
+ 
+    
+// balance changing methods
+    /**
+     * Updates the current balance by adding in a given amount.
+     * Post condition: the new balance is increased by the amount.
+     * @param amount                The amount to add
+     */
+    public void deposit(double amount) 
+    {  
+       balance = balance + amount; 
+    }
+    
+    /**
+     * Update the current balance by subtracting the given amount.
+     * Precondition: the current balance must have at least the amount in it.
+     * Postcondition: the new balance is decreased by the given amount.
+     * @param amount  The amout to subtract
+     */
+    public void withdraw(double amount) 
+    {  
+        if (balance >=  amount)
+            balance = balance - amount; 
     }
 
-	public boolean overdraftProtectionValid(double amount){
-		if((amount + FEE) > this.balance){
-			System.out.println("ERROR.");
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
+    
+// get and set methods
+    /**
+     * @return The available balance.
+     */
+    public double getBalance( )
+    {
+        return balance;
+    }
+    
+    /**
+     * @return The account number.
+     */
+    public int getAccountNumber( )
+    {
+        return accountNumber;
+    }
+    
+    /**
+     * @return The owner's name.
+     */
+    public Customer getOwner( )
+    {
+        return owner;
+    }
+
+    
+// set: postconditions- these all are used to set new values for the instance variables
+    /**
+     * Set the balance.
+     * @param newBalance  The new balance.
+     */
+    public void setBalance(double newBalance )
+    {
+        balance = newBalance;
+    }
+    
+    /**
+     * Set the acount number.
+     * @param newAcctNumber The new account number.
+     */
+    public void setAccountNumber(int newAcctNumber )
+    {
+        accountNumber = newAcctNumber;
+    }
+    
+    /**
+     * Set the new owner of the account.
+     * @param newOwner
+     */
+    public void setOwner(Customer newOwner )
+    {
+        owner = newOwner;
+    }
 }
