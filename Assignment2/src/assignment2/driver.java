@@ -72,6 +72,12 @@ public class driver {
 				 */
 
 				try {
+					
+					if(transaction.indexOf('-') > 0){
+						System.out.println("Amount cannot be negative.");
+						continue;
+					}
+					
 					customerId = Integer.parseInt(transaction.substring(0, 1));	//get customer ID
 					transaction = transaction.substring(2, transaction.length());
 
@@ -97,6 +103,7 @@ public class driver {
 							accountType = transaction;
 						}
 					} else {
+						
 						amount = Double.parseDouble(tmp);
 						transaction = transaction.substring(transaction.indexOf(' ') + 1, transaction.length());
 						accountType = transaction.substring(0, 1).toUpperCase();
@@ -153,10 +160,10 @@ public class driver {
 
 				
 				System.out.println("Current customer being serviced: " + customers[customerId].getName());
-				System.out.println("Checking: " + customers[customerId].getCheckingAccount().balance);
-				System.out.println("Savings: " + customers[customerId].getSavingsAccount().balance);
-				System.out.println("Student Loan: " + customers[customerId].getStudentLoanAccount().balance);
-				System.out.println("Auto Loan: " + customers[customerId].getAutoLoanAccount().balance);
+				System.out.println("Checking: " + customers[customerId].getCheckingAccount().getBalance());
+				System.out.println("Savings: " + customers[customerId].getSavingsAccount().getBalance());
+				System.out.println("Student Loan: " + customers[customerId].getStudentLoanAccount().getBalance());
+				System.out.println("Auto Loan: " + customers[customerId].getAutoLoanAccount().getBalance());
 				System.out.println();
 
 				continue;
