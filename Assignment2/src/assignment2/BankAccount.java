@@ -72,10 +72,14 @@ class BankAccount
      * Postcondition: the new balance is decreased by the given amount.
      * @param amount  The amout to subtract
      */
-    public void withdraw(double amount) 
+    public boolean withdraw(double amount) 
     {  
-        if (balance >=  amount)
+        if (balance >=  amount){
             balance = balance - amount; 
+            return true; // withdraw successful
+        } else {
+        	return false;
+        }
     }
 
     
@@ -116,7 +120,7 @@ class BankAccount
     }
     
     /**
-     * Set the acount number.
+     * Set the account number.
      * @param newAcctNumber The new account number.
      */
     public void setAccountNumber(int newAcctNumber )
@@ -131,5 +135,17 @@ class BankAccount
     public void setOwner(Customer newOwner )
     {
         owner = newOwner;
+    }
+    
+    /**
+     * Determines whether or not the source has enough funds to transfer to the destination
+     * @param amt to be transferred
+     * @return bool indicating whether or not there is enough money to transfer
+     */
+    public boolean transferValid(double amt){
+    	if(this.balance >= amt){
+    		return true;
+    	}
+    	return false;
     }
 }

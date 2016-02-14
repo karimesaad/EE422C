@@ -1,25 +1,36 @@
 package assignment2;
 
 public class SavingsAccount extends BankAccount{
-	private double interestRate = 4.0;
-	private static final int FEE = 20;
-	
-	public SavingsAccount(double initialBalance) {
-		super(initialBalance);
-		// TODO Auto-generated constructor stub
-	}
+	protected static final double INTEREST_RATE = 4.0;
+	protected static final int FEE = 20;
+
+// constructor
 	
 	public SavingsAccount(int acct, Customer owner, double initBalance)
     {
         super(acct, owner, initBalance);
     }
-
-	public boolean overdraftProtectionValid(double amount){
-		if((amount + FEE) > this.balance){
-			System.out.println("ERROR.");
-			return false;
-		} else {
-			return true;
+	
+	/**
+	 * Subtracts from savings account the remaining amount fro overdraft.
+	 * pre-req: the remaining amount comes from subtracting the original amount from the checkings account.
+	 * @param remaining
+	 */
+	
+	protected void overdraftWithdraw(double remaining){
+		this.withdraw(remaining + FEE);
+		System.out.println("Oveerdraft protection:" + this.balance);
+	}
+	
+	/**
+	 * Performs interest accrue on savings accounts. 
+	 */
+	protected void interestAccrue(){
+		if(this.balance >= 1000){
+			double amount = this.getBalance() * (INTEREST_RATE / 100);
+			this.deposit(amount);
+		} else{
+			System.out.println("Really..you don't have at least $1000...");
 		}
 	}
 	

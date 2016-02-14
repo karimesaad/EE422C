@@ -2,6 +2,8 @@ package assignment2;
 
 public class CheckingAccount extends BankAccount{
 	
+// constructors
+	
 	public CheckingAccount(double initialBalance) {
 		super(initialBalance);
 	}
@@ -12,7 +14,8 @@ public class CheckingAccount extends BankAccount{
     }
 	
 	/**
-	 * TODO: type description
+	 * Subtracts amount from checkings balance, and gets the remainder that will be withdrawn from the
+	 * savings account. 
 	 * 
 	 * @pre-condition: Savings Account was able to provide overdraft protection because you had enough money
 	 * @post-condition: Balance is $0 and Savings account gets a $20 fee
@@ -20,7 +23,7 @@ public class CheckingAccount extends BankAccount{
 	 * @param amount: amount to be deducted from checking account
 	 * @return owedAmount: what is left over to pay for savings account
 	 */
-	public double overdraftProtection(double amount){
+	protected double overdraftProtection(double amount){
 		double owedAmount = amount - this.balance; // get the remainder that is still due
 		this.withdraw(this.balance); // balance is $0
 		return owedAmount; // what is owed
