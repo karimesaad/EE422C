@@ -65,7 +65,7 @@ public class driver {
 				String accountType = "";
 				String accountType2 = "";
 				String tmp2 = "";
-				int checkAmount = -1;
+				int checkAmount = 0;
 
 				/**
 				 * Parsing process of transaction.
@@ -88,7 +88,7 @@ public class driver {
 					}
 
 					for (int i = 0; i < tmp.length(); i++) {
-						if (tmp.charAt(i) <= '0' || tmp.charAt(i) >= '9') { //does the tmp string contain numbers or a letter?
+						if (tmp.charAt(i) <= '0' || tmp.charAt(i) >= '9' || tmp.charAt(i) != '.') { //does the tmp string contain numbers or a letter?
 							checkAmount++; 
 						} else {
 							checkAmount = 0;

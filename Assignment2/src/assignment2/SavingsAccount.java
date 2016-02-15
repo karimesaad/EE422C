@@ -12,14 +12,14 @@ public class SavingsAccount extends BankAccount{
     }
 	
 	/**
-	 * Subtracts from savings account the remaining amount fro overdraft.
+	 * Subtracts from savings account the remaining amount for overdraft.
 	 * pre-req: the remaining amount comes from subtracting the original amount from the checkings account.
 	 * @param remaining
 	 */
 	
 	protected void overdraftWithdraw(double remaining){
 		this.withdraw(remaining + FEE);
-		System.out.println("Oveerdraft protection:" + this.balance);
+		System.out.println("Overdraft protection:" + this.balance);
 	}
 	
 	/**
@@ -30,7 +30,7 @@ public class SavingsAccount extends BankAccount{
 			double amount = this.getBalance() * (INTEREST_RATE / 100);
 			this.deposit(amount);
 		} else{
-			System.out.println("Really..you don't have at least $1000...");
+			System.out.println("Customer must have at least 1000 dlls to accrue interest.");
 		}
 	}
 	
